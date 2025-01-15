@@ -2,7 +2,26 @@ export const typeDefs = `#graphql
 
 	type Query {
 		me: User
+		users: [User]
 		posts: [Post]
+	}
+
+	type Mutation {
+		signup(
+		name: String!
+		email: String!
+		password: String!
+		bio: String
+		): AuthPayload
+
+		signin(
+		email:String!
+		password: String!
+		): AuthPayload
+	}
+
+	type AuthPayload {
+		token: String
 	}
 
   type Post {
@@ -26,8 +45,8 @@ export const typeDefs = `#graphql
 
   type Profile {
 	id: ID!
-	bio: String
-	user: User
+	bio: String!
+	user: User!
 	createdAt: String!
 	updatedAt: String
   }
