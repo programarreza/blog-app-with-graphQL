@@ -19,7 +19,7 @@ export const Query = {
   profile: async (parent: any, args: any, { prisma }: TContext) => {
     return prisma.profile.findUnique({
       where: {
-        userId: args.id,
+        id: args.id,
       },
     });
   },
