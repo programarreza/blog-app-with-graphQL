@@ -1,4 +1,5 @@
 import { TContext } from "../..";
+import { CheckUserAccess } from "../../utils/CheckUserAccess";
 
 export const postResolvers = {
   // Post create
@@ -48,42 +49,14 @@ export const postResolvers = {
       };
     }
 
-    const user = await prisma.user.findUnique({
-      where: {
-        id: userInfo.userId,
-      },
-    });
-
-    if (!user) {
-      return {
-        userError: "User not found",
-        post: null,
-      };
-    }
-
-    const post = await prisma.post.findUnique({
-      where: {
-        id: args.postId,
-      },
-    });
-
-    if (!post) {
-      return {
-        userError: "Post not found",
-        post: null,
-      };
-    }
-
-    if (user.id !== post.authorId) {
-      return {
-        userError: "Post not owned by user!",
-        post: null,
-      };
+    const error = await CheckUserAccess(prisma, userInfo.userId, args.postId);
+    if (error) {
+      return error;
     }
 
     const updatedPost = await prisma.post.update({
       where: {
-        id: post.id,
+        id: args.postId,
       },
       data: args.post,
     });
@@ -91,6 +64,36 @@ export const postResolvers = {
     return {
       userError: null,
       post: updatedPost,
+    };
+  },
+
+  // Post delete
+  deletePost: async (
+    parent: any,
+    args: any,
+    { prisma, userInfo }: TContext
+  ) => {
+    if (!userInfo) {
+      return {
+        userError: "Unauthorized",
+        post: null,
+      };
+    }
+
+    const error = await CheckUserAccess(prisma, userInfo.userId, args.postId);
+    if (error) {
+      return error;
+    }
+
+    const deletePost = await prisma.post.delete({
+      where: {
+        id: args.postId,
+      },
+    });
+
+    return {
+      userError: null,
+      post: deletePost,
     };
   },
 };
