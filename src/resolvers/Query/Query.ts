@@ -1,14 +1,25 @@
 import { TContext } from "../..";
 
 export const Query = {
+  // users
   users: async (parent: any, args: any, { prisma }: TContext) => {
     return await prisma.user.findMany();
   },
 
-  profile: async (parent: any, args: any, { prisma, userInfo }: TContext) => {
+  // me
+  me: async (parent: any, args: any, { prisma, userInfo }: TContext) => {
     return prisma.user.findUnique({
       where: {
         id: userInfo?.userId,
+      },
+    });
+  },
+
+  // profile
+  profile: async (parent: any, args: any, { prisma }: TContext) => {
+    return prisma.profile.findUnique({
+      where: {
+        userId: args.id,
       },
     });
   },

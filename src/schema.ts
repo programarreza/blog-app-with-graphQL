@@ -1,7 +1,8 @@
 export const typeDefs = `#graphql
 
 	type Query {
-		profile: User
+		me: User
+		profile(id: ID!): Profile
 		users: [User]
 		posts: [Post]
 	}
