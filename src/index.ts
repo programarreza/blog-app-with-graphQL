@@ -6,7 +6,7 @@ import { resolvers } from "./resolvers";
 import { typeDefs } from "./schema";
 import { jwtHelper } from "./utils/jwtHelper";
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 export interface TContext {
   prisma: PrismaClient<Prisma.PrismaClientOptions, never, DefaultArgs>;
