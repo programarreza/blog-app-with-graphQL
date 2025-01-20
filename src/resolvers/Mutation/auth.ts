@@ -29,6 +29,7 @@ export const authResolvers = {
       data: { name: args.name, email: args.email, password: hashedPassword },
     });
 
+    // create bio
     if (args.bio) {
       await prisma.profile.create({
         data: {

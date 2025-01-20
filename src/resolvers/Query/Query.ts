@@ -2,12 +2,12 @@ import { TContext } from "../..";
 
 export const Query = {
   // users
-  users: async (parent: any, args: any, { prisma }: TContext) => {
+  users: async (__: any, { prisma }: TContext) => {
     return await prisma.user.findMany();
   },
 
   // me
-  me: async (parent: any, args: any, { prisma, userInfo }: TContext) => {
+  me: async (__: any, { prisma, userInfo }: TContext) => {
     return prisma.user.findUnique({
       where: {
         id: userInfo?.userId,
@@ -16,7 +16,7 @@ export const Query = {
   },
 
   // profile
-  profile: async (parent: any, args: any, { prisma }: TContext) => {
+  profile: async (_: any, args: any, { prisma }: TContext) => {
     return prisma.profile.findUnique({
       where: {
         id: args.id,
@@ -25,7 +25,7 @@ export const Query = {
   },
 
   // all posts
-  posts: async (parent: any, args: any, { prisma }: TContext) => {
+  posts: async (__: any, { prisma }: TContext) => {
     return await prisma.post.findMany({
       where: {
         published: true,
